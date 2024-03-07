@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f6f8fa;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    margin-top: 150px;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 6px;
+    box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.login-field {
+    margin-bottom: 20px;
+}
+
+.login-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.login-field input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-field input:focus {
+    outline: none;
+    border-color: #0366d6;
+}
+
+button {
+    background-color: #0366d6;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0550ae;
+}
+
+a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.notion-logo {
+    font-size: 28px;
+    font-weight: bold;
+    position: relative;
+    font-style: italic;
+}
+
+.notion-logo::after {
+    content: "";
+    background-image: url('notion-logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-left: 6px;
+    position: relative;
+    top: 4px;
+}
+
+header {
+    background-color: #1b2b3d;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+}
+
+header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+footer {
+    background-color: #f6f8fa;
+    color: #666;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.outfit-font {
+    font-family: "Outfit", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: weight;
+    font-style: normal;
+}
+
+.image-container {
+    text-align: center;
+    margin-top: 300px;
+    margin-bottom: 100px;
+}
+
+.image-container img {
+    max-width: 50%;
+}
