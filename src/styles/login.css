@@ -84,7 +84,7 @@ a:hover {
 
 .notion-logo::after {
     content: "";
-    background-image: url('notion-logo.png');
+    background-image: url(/src/images/notion-logo.png);
     background-size: contain;
     background-repeat: no-repeat;
     width: 30px;
