@@ -1,7 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-const OverviewTable = ({ projects }) => {
-    return(
+const OverviewTable = () => {
+    const [projects, setProjects] = useState([]);
+
+    const fetchDataFromNotion = () => {
+        const payload = {
+
+        };
+
+
+        axios.post('http://localhost:3002/api/notion', payload)
+            .then(response => {
+                setProjects(response.data);
+                console.log('data hämtad från notion', response.data);
+            })
+            .catch(error => {
+                console.error('Fel vid hämtning från Notion:', error);
+            });
+    };
+    useEffect(() => {
+        fetchDataFromNotion();
+    }, []);
+    if (!projects || !Array.isArray(projects?.results)) {
+        return <p>Laddar data eller ingen data att visa...</p>;
+    }
+
+
+
+    return (
         <table>
             <thead>
                 <tr>
@@ -14,10 +41,10 @@ const OverviewTable = ({ projects }) => {
                 </tr>
             </thead>
             <tbody>
-                {projects.map(project => (
+                {projects.results.map(project => (
                     <tr key={project.id}>
-                        <td className={getStatusColor(project.status)}>{project.status}</td>
-                        <td>{project.projectname}</td>
+                        <td >{project.status}</td>
+                        <td>{project.properties.Projectname.title[0]?.plain_text}</td>
                         <td>{project.hours}</td>
                         <td>{project.workedhours}</td>
                         <td>{project.hoursleft}</td>
@@ -29,17 +56,17 @@ const OverviewTable = ({ projects }) => {
     );
 };
 
-const getStatusColor =(status) => {
-    switch (status.toLowerCase()) {
-        case 'Färdig':
-            return 'green';
-        case 'Pågående':
-            return 'yellow';
-        case 'Inte påbörjad':
-            return 'red';
-        default:
-            return '';
-    }
-};
+// const getStatusColor = (status) => {
+//     switch (status.toLowerCase()) {
+//         case 'Färdig':
+//             return 'green';
+//         case 'Pågående':
+//             return 'yellow';
+//         case 'Inte påbörjad':
+//             return 'red';
+//         default:
+//             return '';
+//     }
+// };
 
 export default OverviewTable;
