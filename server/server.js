@@ -74,3 +74,20 @@ app.post('/api/notion', async (req, res) => {
 });
 
 
+app.post('/api/addRow', async (req, res) => {  
+    try {
+        const response = await axios.post(`https://api.notion.com/v1/pages`, req.body, {
+            headers: {
+                'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
+                'Content-Type': 'application/json',
+                'Notion-Version': '2021-05-13'
+            },
+           
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+    //console.log(json.stringify(newRowData));
+});
