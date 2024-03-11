@@ -57,10 +57,13 @@ app.get("/login/:code", async (req, res) => {
 });
 
 
-app.post('/api/notion', async (req, res) => {
+app.post('/api/query/:databaseId', async (req, res) => {
+
+    const { databaseId } = req.params;
+
     try {
         // Anropa Notion API med inkommande förfrågningsdata
-        const response = await axios.post(`https://api.notion.com/v1/databases/085c0b7eab1d4242b4d0d7f0280154d5/query`, req.body, {
+        const response = await axios.post(`https://api.notion.com/v1/databases/${databaseId}/query`, {}, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
                 'Notion-Version': '2021-05-13'
@@ -74,3 +77,19 @@ app.post('/api/notion', async (req, res) => {
 });
 
 
+app.post('/api/addRow', async (req, res) => {  
+    try {
+        const response = await axios.post(`https://api.notion.com/v1/pages`, req.body, {
+            headers: {
+                'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
+                'Content-Type': 'application/json',
+                'Notion-Version': '2021-05-13'
+            },
+           
+        });
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
