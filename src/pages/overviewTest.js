@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Timereport from './Timereport';
 
 // OverviewTable-component
 const OverviewTable = () => {
@@ -55,7 +56,7 @@ const OverviewTable = () => {
                     </label>
                 </div>
             )}
-            {/* Show overviewtable if is not loading and no errors occur */}
+            {/* Show overviewtable if there is no loading and no error */}
             {!loading && !error && (
                 <table>
                     <thead>
@@ -83,7 +84,7 @@ const OverviewTable = () => {
                             })
                             .map(project => (
                                 <tr key={project.id}>
-                                    {/* Display project information in each cell and display an alternative text if no data is found */}
+                                    {/* Display project information in each cell and displays an alternative text if no data is found */}
                                     <td>{project.properties.Projectname.title[0]?.plain_text || 'Ingen titel'}</td>
                                     <td>{project.properties.Status?.select?.name || 'Okänd status'}</td>
                                     <td>{project.properties.Hours?.number || 'Inga timmar'}</td>
@@ -95,6 +96,8 @@ const OverviewTable = () => {
                     </tbody>
                 </table>
             )}
+            {/* Button that leads to the page for reporting time  */}
+            <button>Rapportera tid</button>
         </div>
     );
 };
