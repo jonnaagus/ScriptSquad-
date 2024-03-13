@@ -36,7 +36,10 @@ const OverviewTable = () => {
     }, [showAll]);
 
     // Table with selected projects, with status ' active' as default. Also contains loading message and error handling
-    return (
+    return (<header className="App-header">
+        <h1>Projektöversikt</h1>
+        
+     
         <div className='projectOverview'>
             {/* Display loading message if data is still loading */}
             {loading && <p>Laddar dina projekt...</p>}
@@ -96,6 +99,7 @@ const OverviewTable = () => {
                 </table>
             )}
         </div>
+        </header>
     );
 };
 
