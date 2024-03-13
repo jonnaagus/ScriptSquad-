@@ -1,6 +1,6 @@
 import lockImage from "../images/lock.png"
 import { useEffect } from "react";
-
+import "../styles/login.css"; // Importera inloggningslayout
 function SaveUser(user) {
     window.localStorage.setItem("user", user);
 }
