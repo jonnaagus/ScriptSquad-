@@ -28,7 +28,7 @@ export default function Login() {
         fetch(`http://localhost:3002/login/${code}`).then(async (resp) => {
             SaveUser(JSON.stringify(await resp.json()));
             isFetching = false;
-            window.location.href="http://localhost:3000/"
+            window.location.href="http://localhost:3000/overview"
 
         });
     }, []);

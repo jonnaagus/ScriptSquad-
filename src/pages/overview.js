@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link} from "react-router-dom";
 
 // OverviewTable-component
 const OverviewTable = () => {
@@ -93,9 +94,12 @@ const OverviewTable = () => {
                                     <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
                                     <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
                                     <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
+                                    <td></td><Link to='/timereport' state={ `${project.id}`}>Open Project</Link> 
+                                    
                                 </tr>
                             ))}
                     </tbody>
+                    
                 </table>
             )}
         </div>
