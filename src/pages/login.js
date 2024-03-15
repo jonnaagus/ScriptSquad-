@@ -53,7 +53,7 @@ export default function Login() {
                     {loadUser() != null ?
                         <div>
                             <p> Du är inloggad som {loadUser().bot.owner.user.name}</p>
-                            <a onClick={() => localStorage.removeItem("user")} href="http://localhost:3000/">Logga ut</a>
+                            <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Logga ut</a>
                         </div>
 
                         :
