@@ -63,7 +63,7 @@ app.post('/api/query/:databaseId', async (req, res) => {
 
     try {
         // Anropa Notion API med inkommande förfrågningsdata
-        const response = await axios.post(`https://api.notion.com/v1/databases/${databaseId}/query`, {}, {
+        const response = await axios.post(`https://api.notion.com/v1/databases/${databaseId}/query`, req.body, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
                 'Notion-Version': '2021-05-13'

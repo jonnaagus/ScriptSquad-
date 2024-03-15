@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Timereport.css';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios';
@@ -6,67 +6,101 @@ import axios from 'axios';
 
 
 
-function postDatatoNotion(hours,date,projId,personId,Note){
-        
+function postDatatoNotion(hours, date, projId, personId, Note) {
+
   //json to add to notion in this example timereports
   const payload =
   {
-      //id to table
-      "parent": {
-          "type": "database_id",
-          "database_id": "c2dcd975b12248588431b2de1d1022c9"
+    //id to table
+    "parent": {
+      "type": "database_id",
+      "database_id": "c2dcd975b12248588431b2de1d1022c9"
+    },
+
+    //data to add as row in tablew
+    "properties": {
+      "Hours": {
+        "type": "number",
+        "number": hours
       },
-
-      //data to add as row in table
-      "properties": {
-          "Hours": {
-              "type": "number",
-              "number": hours
-          },
-          "Date": {
-              "type": "date",
-              "date": {
-                  "start": date
-              }
-          },
-          "Project": {
-              "relation": [
-                  {
-                      //id from project in project table
-                      "id": projId
-                  }
-              ],
-
-          },
-          "Person": {
-              "relation": [
-                  {
-                      //id from user in people table
-                      "id": personId
-                  }
-              ],
-          },
-          "Note": {
-              "title": [
-                  {
-                      "type": "text",
-                      "text": {
-                          "content": Note
-                      }
-                  }
-              ]
+      "Date": {
+        "type": "date",
+        "date": {
+          "start": date
+        }
+      },
+      "Project": {
+        "relation": [
+          {
+            //id from project in project table
+            "id": projId
           }
+        ],
+
+      },
+      "Person": {
+        "relation": [
+          {
+            //id from user in people table
+            "id": personId
+          }
+        ],
+      },
+      "Note": {
+        "title": [
+          {
+            "type": "text",
+            "text": {
+              "content": Note
+            }
+          }
+        ]
       }
+    }
   }
-  
+
   //post json to server as payload
   axios.post(`http://localhost:3002/api/addRow`, payload)
- 
+
 };
 
 
+function getPeople() {
+//get username of current user
+  const user = JSON.parse(window.localStorage.getItem("user")).bot.owner.user.name
+  
+  //add username to filter
+  const payload = {
+    filter: {
+      property: "Name",
+      title: {
+        contains: user
+      }
+    }
+  };
+  //query people database for username
+  const id = "caaa73848db940698e5a9404701078ff"
+  axios.post(`http://localhost:3002/api/query/${id}`, payload).then((resp) => {
+    console.log("RESULT:", resp.data.results )
+
+    //if username found get id from first result
+    if (resp.data.results.length > 0) {
+      const people = resp.data.results[0].id;
+      console.log("PERSON RESULT:", people);
+      window.localStorage.setItem("people", people);
+
+    }
+    //if no results found add id from user "unknown"
+    else {
+      console.log("NO USER FOUND")
+      window.localStorage.setItem("people", "49958f3d-710b-43c2-93ee-103691e4123e");
+    }
+
+  });
 
 
+
+}
 
 
 function Timereport(props) {
@@ -75,7 +109,11 @@ function Timereport(props) {
   const [comments, setComments] = useState('');
 
 
-  
+  //start function to get user id from people table
+  useEffect(() => {
+    getPeople();
+  }, []);
+
   const handleDateChange = (event) => {
     setDate(event.target.value);
   };
@@ -101,6 +139,7 @@ function Timereport(props) {
   const location = useLocation()
   const state = location.state;
   console.log(state);
+
 
   return (
     <div className="wrapper">
@@ -136,7 +175,7 @@ function Timereport(props) {
             onChange={handleCommentsChange}
           />
         </div>
-        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours),date.toString(),state.toString(),"49958f3d-710b-43c2-93ee-103691e4123e",comments.toString())}>Skicka in tidrapport</button>
+        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
       <footer className="footer">
         2024 Projekt.se. Alla rättigheter förbehållna.
