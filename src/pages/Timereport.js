@@ -114,18 +114,22 @@ function Timereport(props) {
     getPeople();
   }, []);
 
+  // Function to handle changes in the date input field
   const handleDateChange = (event) => {
     setDate(event.target.value);
   };
 
+  // Function to handle changes in the hours input field
   const handleHoursChange = (event) => {
     setHours(event.target.value);
   };
 
+  // Function to handle changes in the comments input field
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
   };
 
+  // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Datum:', date);
@@ -146,8 +150,10 @@ function Timereport(props) {
       <header className="header">
         <h1>Tidrapport</h1>
       </header>
+      {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
         <div className="form-group">
+          {/* Date input field */}
           <label htmlFor="date">Datum:</label>
           <input
             type="date"
@@ -158,6 +164,7 @@ function Timereport(props) {
           />
         </div>
         <div className="form-group">
+          {/* Hours input field */}
           <label htmlFor="hours">Timmar:</label>
           <input
             type="number"
@@ -168,6 +175,7 @@ function Timereport(props) {
           />
         </div>
         <div className="form-group">
+          {/* Comments input field */}
           <label htmlFor="comments">Kommentar:</label>
           <textarea
             id="comments"
@@ -175,6 +183,7 @@ function Timereport(props) {
             onChange={handleCommentsChange}
           />
         </div>
+        {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
       <footer className="footer">
