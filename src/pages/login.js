@@ -2,6 +2,11 @@ import lockImage from "../images/lock.png"
 import { useEffect } from "react";
 import "../styles/login.css"; // Importera inloggningslayout
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
+
+
 function SaveUser(user) {
     window.localStorage.setItem("user", user);
 }
@@ -14,66 +19,62 @@ function loadUser() {
 
 function loadPeople() {
     var user = window.localStorage.getItem("people");
-    return JSON.parse(user);
+    return user;
+
 }
+export default function Login() {
 
-//bool to stop fetch from running twice at the same time
-var isFetching;
 
-async function GetUser() {
+    const { setAuth } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    //set location user tried to login from (broken: looses location when returning from notions login page)
+    const from = location.state?.from?.pathname || "/";
+    
+    console.log(from)
 
     //bool to stop fetch from running twice at the same time
+    var isFetching;
 
-    const params = new URL(window.document.location).searchParams;
-    const code = params.get("code");
-
-    if (!code || isFetching) return;
-    isFetching = true;
-    await fetch(`http://localhost:3002/login/${code}`).then(async (resp) => {
-        SaveUser(JSON.stringify(await resp.json()));
-        isFetching = false;
-        // window.location.href="http://localhost:3000/overview"
-
-    });
-
-
-    const user = JSON.parse(window.localStorage.getItem("user")).bot.owner.user.name
-
-    //add username to filter
-    const payload = {
-        filter: {
-            property: "Name",
-            title: {
-                contains: user
-            }
-        }
-    };
-
-
-    await axios.post(`http://localhost:3002/api/query/caaa73848db940698e5a9404701078ff`, payload)
-        .then(async (resp) => {
-
-            //if username found get id from first result
-            if (await resp.data.results.length > 0) {
-                const people = resp.data.results[0].id;
-                console.log("PERSON RESULT:", people);
-                window.localStorage.setItem("people", people);
-                window.location.href = "http://localhost:3000/overview"
-
-            }
-            //if no results found add id from user "unknown"
-            else {
-                console.log("NO USER FOUND")
-                window.location.href = "http://localhost:3000"
-            }
-        });
-
-
-}
-
-export default function Login() {
     // The OAuth client ID from the integration page!
     const oauth_client_id = "d0b58e75-fbe9-4e66-9e2b-c613671e6a6e";
+
+    async function GetUser() {
+
+
+        //get code from url when returning from notion login page
+        const params = new URL(window.document.location).searchParams;
+        const code = params.get("code");
+        //if no code in url dont run
+        if (!code || isFetching) return;
+        isFetching = true;
+
+        //axios.get to get access token from notion and chek if user is in workspace
+        try {
+            //if user is in workspace return user information
+            const response = await axios.get(`http://localhost:3002/login/${code}`);
+            console.log(response);
+            const accessToken = response.data.access_token
+            const userName = response.data.owner.user.name
+            const email = response.data.owner.user.person.email
+            //set user info in Auth
+            setAuth({ accessToken, userName, email });
+            //navigate to page user tried to login from (broken:"from" not working "/overview" used for now)
+            navigate("/overview", { replace: true });
+
+        } catch (error) {
+            //if notion user was not a part of notion workspace return 401
+            if (error.response?.status === 401) {
+                //TODO tell user to contact admin or try another account
+                console.log("USer not auth")
+            }
+        }
+
+        // console.log(JSON.stringify(response?.data));
+    }
+
+
 
 
     // When you open the app, this doesn't do anything, but after you sign into Notion, you'll be redirected back with a code at which point we call our backend.
@@ -113,8 +114,8 @@ export default function Login() {
                                     <p> {loadUser().bot.owner.user.name} finns inte i databasen. kontakta administratör</p>
                                     <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Prova annat konto</a>
                                 </div>
-                        
-                        }
+
+                            }
                         </div>
 
                         :

@@ -12,7 +12,7 @@ const port = process.env.PORT;
 const notionClientId = process.env.NOTION_CLIENT_ID;
 
 // The OAuth client secret from the integration page!
-const notionClientSecret = process.env.NOTION_CLIENT_SECRET; 
+const notionClientSecret = process.env.NOTION_CLIENT_SECRET;
 
 // Internal Integration Secret
 const NOTION_INTERNAL_API_KEY = process.env.NOTION_INTERNAL_API_KEY
@@ -27,7 +27,7 @@ app.listen(port, () => {
 app.get("/login/:code", async (req, res) => {
     const { code } = req.params;
     // Generate an access token with the code we got earlier and the client_id and client_secret we retrived earlier
-    const resp = await axios({
+    const response = await axios({
         method: "POST",
         url: "https://api.notion.com/v1/oauth/token",
         auth: { username: notionClientId, password: notionClientSecret },
@@ -36,23 +36,69 @@ app.get("/login/:code", async (req, res) => {
     });
 
 
-    //Get and send User that is owner of Acess token as response
-    axios({
-        method: 'get',
-        url: 'https://api.notion.com/v1/users/me',
+    console.log(response.data.owner.user.person.email)
+    
+
+    const users = await axios({
+        method: "GET",
+        url: "https://api.notion.com/v1/users/",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${resp.data.access_token}`,
+            Authorization: `Bearer ${NOTION_INTERNAL_API_KEY}`,
             "Notion-Version": "2022-06-28",
         }
-    })
-        .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            res.send(response.data);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    });
+
+    //console.log(users.data.results)
+    const u = users.data.results
+    const personUsers = u.filter(user => user.type === 'person')
+
+
+    let foundUser = false;
+    await personUsers.forEach(user => {
+        console.log("foreach")
+        if (user.person.email === response.data.owner.user.person.email) {
+            foundUser = true;
+        }
+
+    });
+
+    if (foundUser) {
+        console.log("resp sent")
+        res.send(response.data)
+    }
+    else{
+        res.status(401).json({ message: 'user not found' });
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // console.log(resp.data.access_token);
+    // //Get and send User that is owner of Acess token as response
+    // axios({
+    //     method: 'get',
+    //     url: 'https://api.notion.com/v1/users/me',
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${resp.data.access_token}`,
+    //         "Notion-Version": "2022-06-28",
+    //     }
+    // })
+    //     .then(function (response) {
+    //        // console.log(JSON.stringify(response.data));
+    //         res.send(response.data);
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error);
+    //     });
 
 });
 
@@ -77,7 +123,7 @@ app.post('/api/query/:databaseId', async (req, res) => {
 });
 
 
-app.post('/api/addRow', async (req, res) => {  
+app.post('/api/addRow', async (req, res) => {
     try {
         const response = await axios.post(`https://api.notion.com/v1/pages`, req.body, {
             headers: {
@@ -85,7 +131,7 @@ app.post('/api/addRow', async (req, res) => {
                 'Content-Type': 'application/json',
                 'Notion-Version': '2021-05-13'
             },
-           
+
         });
         res.json(response.data);
     } catch (error) {
