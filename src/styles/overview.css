@@ -1,0 +1,104 @@
+body {
+    background-color: white;
+}
+
+/* Container for project overview */
+.projectOverview {
+    background-color: #f0f0f0; /* Light gray background */
+    padding: 30px;
+    border-radius: 10px;
+    
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table header */
+th {
+    text-align: left;
+    padding: 10px;
+    color: black;
+}
+
+/* Table row */
+tr {
+    border-bottom: 1px solid #000000;
+    color: black;
+}
+
+/* Table cell */
+td {
+    padding: 10px;
+}
+
+/* Active projects button */
+.activeProjectsButton {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Open project link */
+.openProjectLink {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff; /* Blue background */
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.openProjectLink:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Dropdown label */
+.label {
+    color: black; /* Change color to black */
+    font-weight: bold;
+}
+
+/* Dropdown select container */
+.selectContainer {
+    display: inline-block; /* Ensure it's inline with the label */
+    margin-left: 10px; /* Add some spacing between the label and the dropdown */
+}
+
+/* Dropdown select */
+.selectDropdown {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-bottom: -8px;
+    border: 1px solid rgb(0, 0, 0)
+}
+
+/* Header */
+h1 {
+    color: black;
+}
+
+/* App header */
+.App-header {
+    background-color: white;
+}
+
+.openProjectButton {
+    display: inline-block;
+    padding: 6px 14px;
+    background-color: #03376e; /* Blue background */
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.openProjectButton:hover {
+    background-color: #001327; /* Darker blue on hover */
+}

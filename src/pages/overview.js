@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../styles/overview.css';
 import axios from 'axios';
 import { Link} from "react-router-dom";
 
@@ -30,6 +31,7 @@ const OverviewTable = () => {
             setLoading(false);
         }
     };
+    
 
     // Run fetchDataFromNotion when the 'showAll' state changes
     useEffect(() => {
@@ -49,10 +51,10 @@ const OverviewTable = () => {
             {/* If there is no loading and no error, the project info will show */}
             {!loading && !error && (
                 <div>
-                    <label>
+                    <label className="label">
                         {/* Dropdown for selecting 'all projects' or only 'active projects' */}
                         Visa:
-                        <select value={showAll.toString()} onChange={() => setShowAll(!showAll)}>
+                        <select className="selectDropdown" value={showAll.toString()} onChange={() => setShowAll(!showAll)}>
                             <option value="false">Aktiva projekt</option>
                             <option value="true">Alla projekt</option>
                         </select>
@@ -94,7 +96,7 @@ const OverviewTable = () => {
                                     <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
                                     <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
                                     <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
-                                    <td></td><Link to='/timereport' state={ `${project.id}`}>Open Project</Link> 
+                                    <Link to="/timereport" state={ `${project.id}` } className="openProjectButton">Open Project</Link> 
                                     
                                 </tr>
                             ))}
