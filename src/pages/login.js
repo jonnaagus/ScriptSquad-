@@ -8,6 +8,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 
 function SaveUser(user) {
+    console.log("USER SAVED")
     window.localStorage.setItem("user", user);
 }
 
@@ -31,7 +32,7 @@ export default function Login() {
 
     //set location user tried to login from (broken: looses location when returning from notions login page)
     const from = location.state?.from?.pathname || "/";
-    
+
     console.log(from)
 
     //bool to stop fetch from running twice at the same time
@@ -42,7 +43,15 @@ export default function Login() {
 
     async function GetUser() {
 
-
+        //if user is set in local storage login and send to page user tried to access
+        if(loadUser() != null){
+            const temp = loadUser()
+            const accessToken = temp.accessToken
+            const userName = temp.userName
+            const  email = temp.email
+           await setAuth({accessToken, userName, email})
+            navigate(from, { replace: true });
+        }
         //get code from url when returning from notion login page
         const params = new URL(window.document.location).searchParams;
         const code = params.get("code");
@@ -59,7 +68,14 @@ export default function Login() {
             const userName = response.data.owner.user.name
             const email = response.data.owner.user.person.email
             //set user info in Auth
+            const user = {
+                accessToken: accessToken,
+                userName: userName,
+                email: email,
+            }
+
             setAuth({ accessToken, userName, email });
+            SaveUser(JSON.stringify(user))
             //navigate to page user tried to login from (broken:"from" not working "/overview" used for now)
             navigate("/overview", { replace: true });
 
@@ -101,33 +117,18 @@ export default function Login() {
 
                     {loadUser() != null ?
                         <div>
-
-                            {loadPeople() != null ?
-                                <div>
-                                    <p> Du är inloggad som {loadUser().bot.owner.user.name}</p>
-                                    <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Logga ut</a>
-                                </div>
-
-                                :
-
-                                <div>
-                                    <p> {loadUser().bot.owner.user.name} finns inte i databasen. kontakta administratör</p>
-                                    <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Prova annat konto</a>
-                                </div>
-
-                            }
+                            <div>
+                                <p> Du är inloggad som {loadUser().userName}</p>
+                                <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Logga ut</a>
+                            </div>
                         </div>
-
                         :
-
                         <a
                             id="notion-login-button"
                             href={`https://api.notion.com/v1/oauth/authorize?client_id=${oauth_client_id}&response_type=code&owner=user`}
                         >
                             Ta mig till Notion
                         </a>
-
-
                     }
                 </div>
             </div>
