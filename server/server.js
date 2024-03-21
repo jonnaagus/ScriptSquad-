@@ -36,9 +36,7 @@ app.get("/login/:code", async (req, res) => {
     });
 
 
-    console.log(response.data.owner.user.person.email)
-    
-
+    //get list of users in workspace
     const users = await axios({
         method: "GET",
         url: "https://api.notion.com/v1/users/",
@@ -49,100 +47,87 @@ app.get("/login/:code", async (req, res) => {
         }
     });
 
-    //console.log(users.data.results)
+    //filter user list to only get type person
     const u = users.data.results
     const personUsers = u.filter(user => user.type === 'person')
 
-
+    //check list if user doing auth is in workspace
     let foundUser = false;
     await personUsers.forEach(user => {
-        console.log("foreach")
         if (user.person.email === response.data.owner.user.person.email) {
             foundUser = true;
         }
 
     });
 
+    //if user is in workspace return data
     if (foundUser) {
         console.log("resp sent")
         res.send(response.data)
     }
-    else{
+    else {
         res.status(401).json({ message: 'user not found' });
     }
-
-    // console.log(resp.data.access_token);
-    // //Get and send User that is owner of Acess token as response
-    // axios({
-    //     method: 'get',
-    //     url: 'https://api.notion.com/v1/users/me',
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${resp.data.access_token}`,
-    //         "Notion-Version": "2022-06-28",
-    //     }
-    // })
-    //     .then(function (response) {
-    //        // console.log(JSON.stringify(response.data));
-    //         res.send(response.data);
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error);
-    //     });
 
 });
 
 
 app.get("/validate/:accessToken", async (req, res) => {
     const { accessToken } = req.params;
-    // Generate an access token with the code we got earlier and the client_id and client_secret we retrived earlier
-    
-    const tokenUser = await axios({
-        method: "GET",
-        url: "https://api.notion.com/v1/users/me",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-            "Notion-Version": "2022-06-28",
+
+
+    try {
+
+        //get owner of access token
+        const tokenUser = await axios({
+            method: "GET",
+            url: "https://api.notion.com/v1/users/me",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+                "Notion-Version": "2022-06-28",
+            }
+        });
+
+
+        //get list of users in workspace
+        const users = await axios({
+            method: "GET",
+            url: "https://api.notion.com/v1/users/",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${NOTION_INTERNAL_API_KEY}`,
+                "Notion-Version": "2022-06-28",
+            }
+        });
+
+        //filter user list to only get type person
+        const u = users.data.results
+        const personUsers = u.filter(user => user.type === 'person')
+
+
+        let foundUser = false;
+        await personUsers.forEach(user => {
+            if (user.person.email === tokenUser.data.bot.owner.user.person.email) {
+                foundUser = true;
+            }
+
+        });
+        //if user is in workspace return data
+        if (foundUser) {
+            console.log(tokenUser.data)
+            console.log("resp sent")
+            res.send(tokenUser.data)
         }
-    });
-
-    
-
-    const users = await axios({
-        method: "GET",
-        url: "https://api.notion.com/v1/users/",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${NOTION_INTERNAL_API_KEY}`,
-            "Notion-Version": "2022-06-28",
-        }
-    });
-
-    //console.log(users.data.results)
-    const u = users.data.results
-    const personUsers = u.filter(user => user.type === 'person')
-
-
-    let foundUser = false;
-    await personUsers.forEach(user => {
-        console.log("foreach")
-        if (user.person.email === tokenUser.data.bot.owner.user.person.email) {
-            foundUser = true;
+        else {
+            res.status(401).json({ message: 'user not found' });
         }
 
-    });
-
-    if (foundUser) {
-        console.log(tokenUser.data)
-        console.log("resp sent")
-        res.send(tokenUser.data)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Internal server error' });
     }
-    else{
-        res.status(401).json({ message: 'user not found' });
-    }
 
-    
 
 });
 
