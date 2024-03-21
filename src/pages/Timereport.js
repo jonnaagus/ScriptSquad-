@@ -3,9 +3,6 @@ import '../styles/Timereport.css';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios';
 
-
-
-
 function postDatatoNotion(hours, date, projId, personId, Note) {
 
   //json to add to notion in this example timereports
