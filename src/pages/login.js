@@ -23,7 +23,7 @@ export default function Login() {
     const location = useLocation();
 
     //set location user tried to login from (broken: looses location when returning from notions login page)
-    const from = location.state?.from?.pathname || "/";
+    const from = location.state?.from?.pathname || "/overview";
 
     //bool to stop fetch from running twice at the same time
     var isFetching;
