@@ -81,8 +81,7 @@ function GetPeople(auth) {
   //query people database for username
   const id = "caaa73848db940698e5a9404701078ff"
   axios.post(`http://localhost:3002/api/query/${id}`, payload).then((resp) => {
-    console.log("RESULT:", resp.data.results)
-
+    
     //if username found get id from first result
     if (resp.data.results.length > 0) {
       const people = resp.data.results[0].id;
@@ -116,7 +115,7 @@ function Timereport(props) {
   //start function to get user id from people table
   useEffect(() => {
     GetPeople(auth);
-  }, []);
+  });
 
   const handleDateChange = (event) => {
     setDate(event.target.value);
