@@ -71,16 +71,6 @@ app.get("/login/:code", async (req, res) => {
         res.status(401).json({ message: 'user not found' });
     }
 
-
-
-
-
-
-
-
-
-
-
     // console.log(resp.data.access_token);
     // //Get and send User that is owner of Acess token as response
     // axios({
@@ -102,6 +92,59 @@ app.get("/login/:code", async (req, res) => {
 
 });
 
+
+app.get("/validate/:accessToken", async (req, res) => {
+    const { accessToken } = req.params;
+    // Generate an access token with the code we got earlier and the client_id and client_secret we retrived earlier
+    
+    const tokenUser = await axios({
+        method: "GET",
+        url: "https://api.notion.com/v1/users/me",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+            "Notion-Version": "2022-06-28",
+        }
+    });
+
+    
+
+    const users = await axios({
+        method: "GET",
+        url: "https://api.notion.com/v1/users/",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${NOTION_INTERNAL_API_KEY}`,
+            "Notion-Version": "2022-06-28",
+        }
+    });
+
+    //console.log(users.data.results)
+    const u = users.data.results
+    const personUsers = u.filter(user => user.type === 'person')
+
+
+    let foundUser = false;
+    await personUsers.forEach(user => {
+        console.log("foreach")
+        if (user.person.email === tokenUser.data.bot.owner.user.person.email) {
+            foundUser = true;
+        }
+
+    });
+
+    if (foundUser) {
+        console.log(tokenUser.data)
+        console.log("resp sent")
+        res.send(tokenUser.data)
+    }
+    else{
+        res.status(401).json({ message: 'user not found' });
+    }
+
+    
+
+});
 
 app.post('/api/query/:databaseId', async (req, res) => {
 

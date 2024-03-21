@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import "../styles/login.css"; // Importera inloggningslayout
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, isRouteErrorResponse } from "react-router-dom";
 
 
 
@@ -49,9 +49,30 @@ export default function Login() {
             const accessToken = temp.accessToken
             const userName = temp.userName
             const  email = temp.email
+
+            const response = await axios.get(`http://localhost:3002/validate/${accessToken}`)
+
+            console.log(response.data);
+
+            if(response.data.bot.owner.user.person.email = email){
+                console.log("MATCH")
+            }
+            else{
+                console.log("no match")
+            }
+
            await setAuth({accessToken, userName, email})
             navigate(from, { replace: true });
         }
+
+
+
+
+
+
+
+
+
         //get code from url when returning from notion login page
         const params = new URL(window.document.location).searchParams;
         const code = params.get("code");
