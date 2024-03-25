@@ -36,6 +36,24 @@ app.get("/login/:code", async (req, res) => {
     });
 
 
+    app.get("/api/timeReports", async (req, res) => {
+        try {
+            const response = await axios.get(`https://api.notion.com/v1/databases/c2dcd975b12248588431b2de1d1022c9/query`, {
+                headers: {
+                    Authorization: `Bearer ${NOTION_INTERNAL_API_KEY}`,
+                    "Notion-Version": "2021-05-13"
+                }
+            });
+    
+            const timeReports = response.data.results;
+            res.json(timeReports);
+        } catch (error) {
+            console.error("Error fetching time reports:", error);
+            res.status(500).json({ error: "Internal server error" });
+        }
+    });
+
+
     //Get and send User that is owner of Acess token as response
     axios({
         method: 'get',

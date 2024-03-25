@@ -107,6 +107,20 @@ function Timereport(props) {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
+  const [timeReports, setTimeReports] = useState([]);
+
+  useEffect(() => {
+    async function getTimeReports() {
+      try {
+        const response = await axios.get(`http://localhost:3002/api/timeReports`);
+        setTimeReports(response.data);
+      } catch (error) {
+        console.error('Error fetching time reports:', error);
+      }
+    }
+
+    getTimeReports();
+  }, []);
 
 
   //start function to get user id from people table
