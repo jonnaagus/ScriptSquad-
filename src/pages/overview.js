@@ -39,7 +39,8 @@ const OverviewTable = () => {
     // Table with selected projects, with status ' active' as default. Also contains loading message and error handling
     return (<header className="App-header">
         <h1>Projektöversikt</h1>
-        
+        {/* TODO TILLFÄLLIG LOGGA UT KNAPP TA BORT NÄR RIKTIG KNAPP FINNS */}
+        <Link to='/' onClick={() => localStorage.clear()}>Logga ut</Link>
      
         <div className='projectOverview'>
             {/* Display loading message if data is still loading */}
