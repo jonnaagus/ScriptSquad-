@@ -1,4 +1,4 @@
-  .form-group {
+.form-group {
     margin-bottom: 20px;
   }
 
@@ -7,21 +7,22 @@
     display: block;
   }
 
-.wrapper {
+  .wrapper {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
-
+    position: relative; /* Ändrade till relativ position för innehållet */
+}
 
 .footer {
-  background-color: #f4f4f4;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1; /* Justera z-index för att placera footern över innehållet */
 }
 
 .header {
@@ -32,13 +33,14 @@
     font-size: 30px;
     height: 10vh;
     width: 100%;
-    position: fixed;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+    z-index: 2; /* Justera z-index för att placera headern över innehållet */
+}
 
 .outfit-font {
     font-family: "Outfit", sans-serif;

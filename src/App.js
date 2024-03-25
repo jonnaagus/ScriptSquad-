@@ -1,19 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // API-anrop
+import React from 'react';
 import './App.css';
 import Login from './pages/login.js'; // Importera inloggningssidan
 import OverviewTable from './pages/overview'; // Importera översiktstabellen
-import "./styles/login.css"; // Importera inloggningslayout
+import Timereport from './pages/Timereport.js';
+import { Route, Routes } from "react-router-dom";
+import Layout from './component/Layout.js';
+import RequireAuth from './component/RequireAuth.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Projektöversikt</h1>
-        {/* <Login/> */}
-        <OverviewTable /> 
-      </header>
-    </div>
+
+    <Routes>
+      <Route path="/" element={<Layout />}>
+
+        {/* PublicRoute */}
+        <Route path="/" element={<Login />} />
+
+        {/* ProteectedRoute */}
+        <Route element ={<RequireAuth />}>
+        <Route path="/overview" element={<OverviewTable />} />
+        <Route path="/timereport" element={<Timereport />} />
+        </Route>
+        {/* <Route path= "*" element={<missing />} */}
+      </Route>
+
+    </Routes>
+
   );
 }
 
