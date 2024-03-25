@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Timereport.css';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios';
+import useAuth from '../hooks/useAuth';
+
+
 
 function postDatatoNotion(hours, date, projId, personId, Note) {
 
@@ -61,25 +64,24 @@ function postDatatoNotion(hours, date, projId, personId, Note) {
 
 };
 
+function GetPeople(auth) {
+  //get username of current user
 
-function getPeople() {
-//get username of current user
-  const user = JSON.parse(window.localStorage.getItem("user")).bot.owner.user.name
-  
+ // const user = JSON.parse(window.localStorage.getItem("user")).bot.owner.user.name
+
   //add username to filter
   const payload = {
     filter: {
       property: "Name",
       title: {
-        contains: user
+        contains: auth.userName
       }
     }
   };
   //query people database for username
   const id = "caaa73848db940698e5a9404701078ff"
   axios.post(`http://localhost:3002/api/query/${id}`, payload).then((resp) => {
-    console.log("RESULT:", resp.data.results )
-
+    
     //if username found get id from first result
     if (resp.data.results.length > 0) {
       const people = resp.data.results[0].id;
@@ -100,16 +102,20 @@ function getPeople() {
 }
 
 
+
+
+
+
 function Timereport(props) {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
 
-
+  const { auth } = useAuth();
   //start function to get user id from people table
   useEffect(() => {
-    getPeople();
-  }, []);
+    GetPeople(auth);
+  });
 
   // Function to handle changes in the date input field
   const handleDateChange = (event) => {
