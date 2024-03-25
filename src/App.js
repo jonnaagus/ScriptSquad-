@@ -4,8 +4,8 @@ import Login from './pages/login.js'; // Importera inloggningssidan
 import OverviewTable from './pages/overview'; // Importera översiktstabellen
 import Timereport from './pages/Timereport.js';
 import { Route, Routes } from "react-router-dom";
-import Layout from './component/Layout.js';
-import RequireAuth from './component/RequireAuth.js';
+import Layout from './components/Layout.js';
+import RequireAuth from './components/RequireAuth.js';
 
 function App() {
   return (
