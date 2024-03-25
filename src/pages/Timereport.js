@@ -116,6 +116,15 @@ function Timereport(props) {
     async function getTimeReports() {
       try {
         const response = await axios.get(`http://localhost:3002/api/timeReports`);
+
+        //TEST PRINTING RESPONE REMOVE LATER!
+        response.data.forEach(report => {
+          console.log("Date", report.properties.Date.date.start)
+          console.log("note", report.properties.Note.title[0].plain_text)
+          console.log("-----------------")
+        });
+
+
         setTimeReports(response.data);
       } catch (error) {
         console.error('Error fetching time reports:', error);
