@@ -167,3 +167,22 @@ app.post('/api/addRow', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+app.get("/api/timeReports", async (req, res) => {
+    try {
+        const response = await axios.post(`https://api.notion.com/v1/databases/c2dcd975b12248588431b2de1d1022c9/query`,{}, {
+            headers: {
+                'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
+                'Content-Type': 'application/json',
+                "Notion-Version": "2021-05-13"
+            }
+        });
+
+        const timeReports = response.data.results;
+        console.log(timeReports)
+        res.json(timeReports);
+    } catch (error) {
+        console.error("Error fetching time reports:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
