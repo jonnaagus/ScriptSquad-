@@ -122,7 +122,7 @@ export default function Login() {
         <div>
             <header>
                 {/* <!-- Header rubrik --> */}
-                <h1 className="outfit-font">Projekt.se</h1>
+                <h1 className="outfit-font">ScriptSquad</h1>
             </header>
 
             {validating && <p>LADDAR....</p>}
@@ -160,7 +160,7 @@ export default function Login() {
 
             <footer>
                 {/* <!-- Footer --> */}
-                <p>&copy; 2024 Projekt.se. Alla rättigheter förbehållna.</p>
+                <p>&copy; 2024 ScriptSquad. Alla rättigheter förbehållna.</p>
             </footer>
         </div>
     );
