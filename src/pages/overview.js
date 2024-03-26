@@ -12,11 +12,9 @@ const OverviewTable = () => {
 
     // Fetch data from Notion with Notion Database ID
     const fetchDataFromNotion = async () => {
-        const id = "085c0b7eab1d4242b4d0d7f0280154d5";
-
         // Post to server - Returns Json
         try {
-            const response = await axios.post(`http://localhost:3002/api/query/${id}`);
+            const response = await axios.post(`http://localhost:3002/api/projects`);
             // Update state with fetched project data
             setProjects(response.data);
             // Update loading state to false
@@ -75,7 +73,7 @@ const OverviewTable = () => {
                     </thead>
                     <tbody>
                         {/* Map through filtered and sorted projects */}
-                        {projects.results
+                        {projects
                             .filter(project => (showAll ? true : project.properties.Status?.select?.name === 'Active'))
                             .sort((a, b) => {
                                 // Order projects according to status
