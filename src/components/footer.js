@@ -4,9 +4,9 @@ import React from 'react';
 function Footer({ onFooterClick }) {
   return (
     <footer>
-        <div className='container'>
-        <address>&copy; {new Date().getFullYear()} Projekt.se. Alla rättigheter förbehållna.</address>
-        </div>
+        {/* <div className='container'> */}
+        <address>&copy; {new Date().getFullYear()} SqriptSquad. Alla rättigheter förbehållna.</address>
+        {/* </div> */}
     </footer>
   );
 }
