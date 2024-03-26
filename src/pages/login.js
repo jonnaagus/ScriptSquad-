@@ -120,11 +120,6 @@ export default function Login() {
 
     return (
         <div>
-            <header>
-                {/* <!-- Header rubrik --> */}
-                <h1 className="outfit-font">ScriptSquad</h1>
-            </header>
-
             {validating && <p>LADDAR....</p>}
 
             {!validating && 
@@ -157,11 +152,6 @@ export default function Login() {
                     </div>
                 </div>
             }
-
-            <footer>
-                {/* <!-- Footer --> */}
-                <p>&copy; 2024 ScriptSquad. Alla rättigheter förbehållna.</p>
-            </footer>
         </div>
     );
 }

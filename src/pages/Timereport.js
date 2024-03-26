@@ -150,9 +150,6 @@ function Timereport(props) {
 
   return (
     <div className="wrapper">
-      <header className="header">
-        <h1>Tidrapport</h1>
-      </header>
       {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -189,9 +186,6 @@ function Timereport(props) {
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-      <footer className="footer">
-        2024 Projekt.se. Alla rättigheter förbehållna.
-      </footer>
     </div>
   );
 }
