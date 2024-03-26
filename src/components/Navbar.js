@@ -8,7 +8,6 @@ const NavigationMenu = ({ isLoggedIn, onLogout }) => {
                 <li><Link to="/login">Home</Link></li>
                 <li><Link to="/overview">Project Overview</Link></li>
                 <li><Link to="/timereport">Time Report</Link></li>
-                <li><Link to="/projects">Projects</Link></li>
             </ul>
                 {isLoggedIn && (
                     <button onClick={onLogout}>Log out</button>
