@@ -16,13 +16,10 @@ const OverviewTable = () => {
     // Fetch data from Notion with Notion Database ID
 
     const fetchDataFromNotion = async () => {
-        const id = "085c0b7eab1d4242b4d0d7f0280154d5";
-
         // Post to server - Returns Json
 
         try {
-            const response = await axios.post(`http://localhost:3002/api/query/${id}`);
-
+            const response = await axios.post(`http://localhost:3002/api/projects`);
             // Update state with fetched project data
 
             setProjects(response.data);
@@ -53,73 +50,72 @@ const OverviewTable = () => {
     }, [showAll]);
 
     // Table with selected projects, with status ' active' as default. Also contains loading message and error handling
-
-    return (
-        <div className="container2">
-            <div className="header-container">
-                <h2>Projektöversikt</h2>
-                <div className="header-content">
-                    <Link to='/' onClick={() => localStorage.clear()}>Logga ut</Link>
+    return (<header className="App-header">
+        <h1>Projektöversikt</h1>
+        {/* TODO TILLFÄLLIG LOGGA UT KNAPP TA BORT NÄR RIKTIG KNAPP FINNS */}
+        <Link to='/' onClick={() => localStorage.clear()}>Logga ut</Link>
+     
+        <div className='projectOverview'>
+            {/* Display loading message if data is still loading */}
+            {loading && <p>Laddar dina projekt...</p>}
+            {/* Display error message if an error occurred */}
+            {error && <p>{error}</p>}
+            {/* If there is no loading and no error, the project info will show */}
+            {!loading && !error && (
+                <div>
+                    <label>
+                        {/* Dropdown for selecting 'all projects' or only 'active projects' */}
+                        Visa:
+                        <select value={showAll.toString()} onChange={() => setShowAll(!showAll)}>
+                            <option value="false">Aktiva projekt</option>
+                            <option value="true">Alla projekt</option>
+                        </select>
+                    </label>
                 </div>
-            </div>
-
-            <div className='projectContainer'>
-                {loading && <p>Laddar dina projekt...</p>}
-                {error && <p>{error}</p>}
-                {!loading && !error && (
-                    <div>
-                        <label className="label">
-                            Visa:
-                            <select className="selectDropdown" value={showAll.toString()} onChange={() => setShowAll(!showAll)}>
-                                <option value="false">Aktiva projekt</option>
-                                <option value="true">Alla projekt</option>
-                            </select>
-                        </label>
-                    </div>
-                )}
-                {!loading && !error && (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Projektnamn</th>
-                                <th>Status</th>
-                                <th>Timmar</th>
-                                <th>Arbetade timmar</th>
-                                <th>Timmar kvar</th>
-                                <th>Tid</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {projects.results
-                                .filter(project => (showAll ? true : project.properties.Status?.select?.name === 'Active'))
-                                .sort((a, b) => {
-
-                                    // Order projects according to status
-
-                                    const statusOrder = {
-                                        'Active': 1,
-                                        'Next up': 2,
-                                        'Done': 3
-                                    };
-                                    return statusOrder[a.properties.Status?.select?.name] - statusOrder[b.properties.Status?.select?.name];
-                                })
-                                .map(project => (
-                                    <tr key={project.id}>
-                                        <td>{project.properties.Projectname.title[0]?.plain_text || 'Ingen titel'}</td>
-                                        <td>{project.properties.Status?.select?.name || 'Okänd status'}</td>
-                                        <td>{project.properties.Hours?.number || 'Inga timmar'}</td>
-                                        <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
-                                        <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
-                                        <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
-                                        <td>
-                                            <Link to="/timereport" state={ `${project.id}` } className="openProjectButton">Öppna projekt</Link> 
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </table>
-                )}
-            </div>
+            )}
+            {/* Show overviewtable if is not loading and no errors occur */}
+            {!loading && !error && (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Projectname</th>
+                            <th>Status</th>
+                            <th>Hours</th>
+                            <th>Worked hours</th>
+                            <th>Hours left</th>
+                            <th>Timespan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Map through filtered and sorted projects */}
+                        {projects
+                            .filter(project => (showAll ? true : project.properties.Status?.select?.name === 'Active'))
+                            .sort((a, b) => {
+                                // Order projects according to status
+                                const statusOrder = {
+                                    'Active': 1,
+                                    'Next up': 2,
+                                    'Done': 3
+                                };
+                                return statusOrder[a.properties.Status?.select?.name] - statusOrder[b.properties.Status?.select?.name];
+                            })
+                            .map(project => (
+                                <tr key={project.id}>
+                                    {/* Display project information in each cell and display an alternative text if no data is found */}
+                                    <td>{project.properties.Projectname.title[0]?.plain_text || 'Ingen titel'}</td>
+                                    <td>{project.properties.Status?.select?.name || 'Okänd status'}</td>
+                                    <td>{project.properties.Hours?.number || 'Inga timmar'}</td>
+                                    <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
+                                    <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
+                                    <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
+                                    <td></td><Link to='/timereport' state={ `${project.id}`}>Open Project</Link> 
+                                    
+                                </tr>
+                            ))}
+                    </tbody>
+                    
+                </table>
+            )}
         </div>
     );
 };
