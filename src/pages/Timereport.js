@@ -75,16 +75,17 @@ function GetPeople(auth) {
       property: "Name",
       title: {
         contains: auth.userName
+       
       }
     }
   };
   //query people database for username
-  const id = "caaa73848db940698e5a9404701078ff"
-  axios.post(`http://localhost:3002/api/query/${id}`, payload).then((resp) => {
+  axios.post('http://localhost:3002/api/people', payload).then((resp) => {
     
+  console.log(resp.data)
     //if username found get id from first result
-    if (resp.data.results.length > 0) {
-      const people = resp.data.results[0].id;
+    if (resp.data.length > 0) {
+      const people = resp.data[0].id;
       console.log("PERSON RESULT:", people);
       window.localStorage.setItem("people", people);
 
@@ -153,9 +154,6 @@ function Timereport(props) {
 
   return (
     <div className="wrapper">
-      <header className="header">
-        <h1>Tidrapport</h1>
-      </header>
       {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -192,9 +190,6 @@ function Timereport(props) {
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-      <footer className="footer">
-        2024 Projekt.se. Alla rättigheter förbehållna.
-      </footer>
     </div>
   );
 }
