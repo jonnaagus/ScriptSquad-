@@ -6,9 +6,9 @@ const NavigationMenu = ({ isLoggedIn, onLogout }) => {
     return (
         <nav className="navigation-menu">
             <ul className="menu-list">
-                <li className="menu-item"><Link to="/login">Home</Link></li>
-                <li className="menu-item"><Link to="/overview">Project Overview</Link></li>
-                <li className="menu-item"><Link to="/timereport">Time Report</Link></li>
+                <li className="menu-item"><Link to="/login">Hem</Link></li>
+                <li className="menu-item"><Link to="/overview">Projekt översikt</Link></li>
+                <li className="menu-item"><Link to="/timereport">Tidsrapport</Link></li>
             </ul>
             {isLoggedIn && (
                 <button className="logout-button" onClick={onLogout}>Log out</button>
