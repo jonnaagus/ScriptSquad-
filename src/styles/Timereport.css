@@ -57,3 +57,22 @@
     justify-content: center;
     align-items: center;
   }
+
+  .time-reports-scrollable {
+    max-height: 400px; /* Justera höjden efter behov */
+    overflow-y: auto; /* Gör att innehållet blir scrollbart vertikalt */
+  }
+
+  .time-reports {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .time-report-item {
+    display: flex; /* Använd flexbox */
+    flex-direction: row; /* Ställ in riktningen till rad */
+    align-items: center; /* Centrera innehållet vertikalt */
+    justify-content: space-between; /* Sprid ut innehållet över hela utrymmet */
+    margin-bottom: 20px;
+    padding: 0 20px;
+  }
