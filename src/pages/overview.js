@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // OverviewTable-component
 const OverviewTable = () => {
@@ -9,7 +9,6 @@ const OverviewTable = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showAll, setShowAll] = useState(false);
-
     // Fetch data from Notion with Notion Database ID
     const fetchDataFromNotion = async () => {
         // Post to server - Returns Json
@@ -39,7 +38,7 @@ const OverviewTable = () => {
         <h1>Projektöversikt</h1>
         {/* TODO TILLFÄLLIG LOGGA UT KNAPP TA BORT NÄR RIKTIG KNAPP FINNS */}
         <Link to='/' onClick={() => localStorage.clear()}>Logga ut</Link>
-     
+
         <div className='projectOverview'>
             {/* Display loading message if data is still loading */}
             {loading && <p>Laddar dina projekt...</p>}
@@ -93,16 +92,21 @@ const OverviewTable = () => {
                                     <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
                                     <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
                                     <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
+<<<<<<< HEAD
                                     <td><Link to='/timereport' state={ `${project.id}`}>Open Project</Link> </td>
                                     
+=======
+                                    <td><Link to={`/timereport/${project.id}`}>Open Project</Link> </td>
+
+>>>>>>> main
                                 </tr>
                             ))}
                     </tbody>
-                    
+
                 </table>
             )}
         </div>
-        </header>
+    </header>
     );
 };
 
