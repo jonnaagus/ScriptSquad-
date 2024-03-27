@@ -103,26 +103,34 @@ function Timereport() {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
-
-  const { id } = useParams();
   const [timeReports, setTimeReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [peopleMap, setPeopleMap] = useState({});
   const [projectsMap, setProjectsMap] = useState({});
 
+  const { id } = useParams();
+
   useEffect(() => {
     async function getTimeReports() {
       try {
-        const response = await axios.post(`http://localhost:3002/api/timeReports`);
+        const payload = {
+          filter: {
+            property: "Project",
+            relation: {
+              contains: id
+            }
+          }
+        };
+        const response = await axios.post(`http://localhost:3002/api/timeReports`, payload);
         setTimeReports(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching time reports:', error);
       }
     }
-
+  
     getTimeReports();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     async function fetchPeopleAndProjects() {
