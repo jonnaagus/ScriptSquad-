@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Timereport.css';
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 
@@ -111,6 +111,9 @@ function Timereport(props) {
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
 
+ const {id} = useParams();
+
+ console.log("ID FROM URL: ", id )
   const { auth } = useAuth();
   //start function to get user id from people table
   useEffect(() => {
@@ -187,7 +190,7 @@ function Timereport(props) {
           />
         </div>
         {/* Submit button */}
-        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
+        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
       <footer className="footer">
         2024 Projekt.se. Alla rättigheter förbehållna.
