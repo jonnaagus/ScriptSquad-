@@ -19,7 +19,7 @@ function App() {
         {/* ProteectedRoute */}
         <Route element ={<RequireAuth />}>
         <Route path="/overview" element={<OverviewTable />} />
-        <Route path="/timereport" element={<Timereport />} />
+        <Route path="/timereport/:id" element={<Timereport />} />
         </Route>
         {/* <Route path= "*" element={<missing />} */}
       </Route>
