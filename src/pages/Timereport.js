@@ -104,35 +104,57 @@ function GetPeople(auth) {
 
 
 
-
-
-
 function Timereport(props) {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
   const [timeReports, setTimeReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [peopleMap, setPeopleMap] = useState({});
+  const [projectsMap, setProjectsMap] = useState({});
 
   useEffect(() => {
     async function getTimeReports() {
       try {
-        const response = await axios.get(`http://localhost:3002/api/timeReports`);
-
-        //TEST PRINTING RESPONE REMOVE LATER!
-        response.data.forEach(report => {
-          console.log("Date", report.properties.Date.date.start)
-          console.log("note", report.properties.Note.title[0].plain_text)
-          console.log("-----------------")
-        });
-
-
+        const response = await axios.post(`http://localhost:3002/api/timeReports`);
         setTimeReports(response.data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching time reports:', error);
       }
     }
 
     getTimeReports();
+  }, []);
+
+  useEffect(() => {
+    async function fetchPeopleAndProjects() {
+      try {
+        const peopleResponse = await axios.post('http://localhost:3002/api/people');
+        const projectsResponse = await axios.post('http://localhost:3002/api/projects');
+    
+        const peopleMapData = {};
+        peopleResponse.data.forEach(person => {
+          if (person.properties.Name) {
+            peopleMapData[person.id] = person.properties.Name.title[0].plain_text;
+          }
+        });
+    
+        const projectsMapData = {};
+        projectsResponse.data.forEach(project => {
+          if (project.properties.Projectname) {
+            projectsMapData[project.id] = project.properties.Projectname.title[0].plain_text;
+          }
+        });
+    
+        setPeopleMap(peopleMapData);
+        setProjectsMap(projectsMapData);
+      } catch (error) {
+        console.error('Error fetching people and projects:', error);
+      }
+    }
+
+    fetchPeopleAndProjects();
   }, []);
 
   const { auth } = useAuth();
@@ -210,8 +232,28 @@ function Timereport(props) {
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-    </div>
-  );
+      <div className="timereport-container">
+  <h1>Tidrapporter</h1>
+  <div className="time-reports-scrollable">
+    {loading ? (
+      <p>Loading...</p>
+    ) : (
+      <div className="time-reports">
+        {timeReports.map(report => (
+          <div key={report.id} className="time-report-item">
+            <p>Projekt: {projectsMap[report.properties.Project.relation[0].id]}</p>
+            <p>Person: {peopleMap[report.properties.Person.relation[0].id]}</p>
+            <p>Datum: {report.properties.Date.date.start}</p>
+            <p>Timmar: {report.properties.Hours.number}</p>
+            <p>Kommentar: {report.properties.Note.title[0].plain_text}</p>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+</div>
+    );
 }
 
 export default Timereport;
