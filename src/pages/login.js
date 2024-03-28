@@ -128,7 +128,7 @@ export default function Login() {
                     <img src={lockImage} alt="lock" style={{ width: '100px', height: 'auto' }} />
                 </div>
                     {/* <!--- Bestämmer plats på rutan--> */}
-                    <div className="container">
+                    <div className="login-container">
                         {/* <!--- Forma rutan--> */}
                         <div className="login-box">
                             <h2>Logga in med <span className="notion-logo">Notion</span></h2>

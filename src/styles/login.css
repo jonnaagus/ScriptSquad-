@@ -5,7 +5,7 @@ body {
     background-color: #f6f8fa;
 }
 
-.container {
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
