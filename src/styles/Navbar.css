@@ -1,0 +1,42 @@
+.navigation-menu {
+    background-color: #172636;
+    padding: 10px;
+}
+
+.menu-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-item {
+    display: inline;
+    margin-right: 10px;
+}
+
+.menu-item a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: box-shadow 0.3s ease;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.menu-item a:hover {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.logout-button {
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.logout-button:hover {
+    background-color: #ff4838;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
