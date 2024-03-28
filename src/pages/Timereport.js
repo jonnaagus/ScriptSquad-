@@ -202,8 +202,8 @@ function Timereport() {
     <div className="wrapper">
       {/* Project name and description */}
       <div className="project-info">
-        <h2>Project Name</h2>
-        <p>Project Description</p>
+        <h2>{projectsMap[id]}</h2>
+        
       </div>
       {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
@@ -244,37 +244,37 @@ function Timereport() {
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-      <h1 style={{ fontSize: '24px' }}>Tidrapporter</h1>
-      <div>
-        {/* Render loading message or time reports table */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <table style={{ margin: '0 auto', fontSize: '18px' }}>
-            <thead>
-              <tr>
-                <th>Projekt</th>
-                <th>Person</th>
-                <th>Datum</th>
-                <th>Timmar</th>
-                <th>Kommentar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Map through timeReports and render each report */}
-              {timeReports.map(report => (
-                <tr key={report.id}>
-                  <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
-                  <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
-                  <td>{report.properties.Date.date.start}</td>
-                  <td>{report.properties.Hours.number}</td>
-                  <td>{report.properties.Note.title[0].plain_text}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <div className="table-container">
+  <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Tidrapporter</h1>
+  {/* Render loading message or time reports table */}
+  {loading ? (
+    <p>Loading...</p>
+  ) : (
+    <table>
+      <thead>
+        <tr>
+          <th>Projekt</th>
+          <th>Person</th>
+          <th>Datum</th>
+          <th>Timmar</th>
+          <th>Kommentar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {/* Map through timeReports and render each report */}
+        {timeReports.map(report => (
+          <tr key={report.id}>
+            <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
+            <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
+            <td>{report.properties.Date.date.start}</td>
+            <td>{report.properties.Hours.number}</td>
+            <td>{report.properties.Note.title[0].plain_text}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
     </div>
 );
 }

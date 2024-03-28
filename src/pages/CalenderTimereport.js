@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../styles/Timereport.css';
+import '../styles/calenderTimereport.css';
 import axios from 'axios';
 
 // Function to fetch reported time for a given day
@@ -109,11 +109,11 @@ function CalendarView(props) {
     };
     
     return (
-        <div className="wrapper">
-            <header className="header">
-                <h1>Tidrapporter</h1>
+        <div className="wrapper2">
+            <header className="header2">
+                <h1>Rapporterad tid</h1>
             </header>
-            <div className="calendar-controls">
+            <div className="calendar-controls2">
                 <label htmlFor="date">Datum:</label>
                 <input
                     type="date"
@@ -129,7 +129,7 @@ function CalendarView(props) {
                     <option value="week">Vecka</option>
                 </select>
             </div>
-            <div className="calendar">
+            <div className="calendar2">
                 {/* Display reported time for the selected date or week */}
                 <h2>Rapporterad tid</h2>
                 <table>
