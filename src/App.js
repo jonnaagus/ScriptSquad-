@@ -6,6 +6,7 @@ import Timereport from './pages/Timereport.js';
 import { Route, Routes } from "react-router-dom";
 import Layout from './components/Layout.js';
 import RequireAuth from './components/RequireAuth.js';
+import CalendarView from './pages/CalenderTimereport.js';
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
         {/* ProteectedRoute */}
         <Route element ={<RequireAuth />}>
         <Route path="/overview" element={<OverviewTable />} />
-        <Route path="/timereport" element={<Timereport />} />
+        <Route path="/timereport/:id" element={<Timereport />} />
+        <Route path="/calenderTimereport" element={<CalendarView />} />
         </Route>
         {/* <Route path= "*" element={<missing />} */}
       </Route>

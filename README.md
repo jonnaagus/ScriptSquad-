@@ -1,70 +1,25 @@
-# Getting Started with Create React App
+# SqriptSquad
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Databas
+vi använder Notion som databas och hämtar data via Notions API
 
-## Available Scripts
+## Backend
+Express används som server som sköter kontakten med Notions api och förvarar Api nycklar i en .env
 
-In the project directory, you can run:
+## Frontend
+För fontend använder vi react. Vi har react-router som låser ner alla sidor förutom login om man inte är inloggad
 
-### `npm start`
+## Features
+### Login
+Första sidan användaren möts av är en loginsida där man kan skickas vidare till Notion för inloggning. Från Notion får vi en kod som skickas till våran server för att generera en oauht token. för att begränsa för att släppa in vem som helst så jämförs ägaren till token om den finns med i SqriptSquads workspace på notion. Om ägaren till token är medlem i workspacet så blir dom insläppta och token sparas i LocalStorage för att fortsätta vara inloggad.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+på login sidan finns även en funktion som validerar att den som är sparad i LocalStorage är en del av workspacet.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Översikt
+När användaren blivit inloggad så hamnar dom på översikt-sidan. där kan vi se en översikt av alla projekt och ta oss vidare till en sida där vi kan rapportera och se rapporterad tid. som standard så filtrerar översikten på aktiva projekt.
 
-### `npm test`
+### Projekt
+På projekt sidan så får vi ett formulär för att raportera tid och en lista över rapporter för det projektet. på projekt sidan hämtas ett id från people tabellen i databasen som matchar namnet på den användarens om är inloggad. Det används för att sätta ett namn i tidrapporten. om inget namn matchar med användares i tabellen så används id för "unkown".
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Övrigt
+Scrumboard: https://app.asana.com/0/1206692077462564/1206692077462564

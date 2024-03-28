@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Timereport.css';
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 
@@ -62,9 +62,6 @@ function postDatatoNotion(hours, date, projId, personId, Note) {
 };
 
 function GetPeople(auth) {
-  //get username of current user
-
- // const user = JSON.parse(window.localStorage.getItem("user")).bot.owner.user.name
 
   //add username to filter
   const payload = {
@@ -72,14 +69,14 @@ function GetPeople(auth) {
       property: "Name",
       title: {
         contains: auth.userName
-       
+
       }
     }
   };
   //query people database for username
   axios.post('http://localhost:3002/api/people', payload).then((resp) => {
-    
-  console.log(resp.data)
+
+    console.log(resp.data)
     //if username found get id from first result
     if (resp.data.length > 0) {
       const people = resp.data[0].id;
@@ -99,10 +96,75 @@ function GetPeople(auth) {
 
 }
 
-function Timereport(props) {
+function Timereport() {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
+  const [timeReports, setTimeReports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [peopleMap, setPeopleMap] = useState({});
+  const [projectsMap, setProjectsMap] = useState({});
+
+  //extracting the id parameter from the route
+  const { id } = useParams();
+
+  //fetch time reports associated with the project id when id changes
+  useEffect(() => {
+    async function getTimeReports() {
+      try {
+        const payload = {
+          filter: {
+            property: "Project",
+            relation: {
+              contains: id
+            }
+          }
+        };
+        const response = await axios.post(`http://localhost:3002/api/timeReports`, payload);
+        setTimeReports(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching time reports:', error);
+      }
+    }
+  
+    getTimeReports();
+  }, [id]);
+
+  //fetch people and projects data when the component mounts
+  useEffect(() => {
+    async function fetchPeopleAndProjects() {
+      try {
+        const peopleResponse = await axios.post('http://localhost:3002/api/people');
+        const projectsResponse = await axios.post('http://localhost:3002/api/projects');
+    
+        //extracting people data and creating a map
+        const peopleMapData = {};
+        peopleResponse.data.forEach(person => {
+          if (person.properties.Name) {
+            peopleMapData[person.id] = person.properties.Name.title[0].plain_text;
+          }
+        });
+    
+        //extracting projects data and creating a map
+        const projectsMapData = {};
+        projectsResponse.data.forEach(project => {
+          if (project.properties.Projectname) {
+            projectsMapData[project.id] = project.properties.Projectname.title[0].plain_text;
+          }
+        });
+    
+        //setting state variables for people and projects maps
+        setPeopleMap(peopleMapData);
+        setProjectsMap(projectsMapData);
+      } catch (error) {
+        console.error('Error fetching people and projects:', error);
+      }
+    }
+
+    //call the fetchPeopleAndProjects function when the component mounts
+    fetchPeopleAndProjects();
+  }, []);
 
   const { auth } = useAuth();
   //start function to get user id from people table
@@ -110,22 +172,22 @@ function Timereport(props) {
     GetPeople(auth);
   });
 
-  // Function to handle changes in the date input field
+  //function to handle changes in the date input field
   const handleDateChange = (event) => {
     setDate(event.target.value);
   };
 
-  // Function to handle changes in the hours input field
+  //function to handle changes in the hours input field
   const handleHoursChange = (event) => {
     setHours(event.target.value);
   };
 
-  // Function to handle changes in the comments input field
+  //function to handle changes in the comments input field
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
   };
 
-  // Function to handle form submission
+  //function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Datum:', date);
@@ -135,11 +197,6 @@ function Timereport(props) {
     setHours('');
     setComments('');
   };
-
-  const location = useLocation()
-  const state = location.state;
-  console.log(state);
-
 
   return (
     <div className="wrapper">
@@ -185,10 +242,41 @@ function Timereport(props) {
           </div>
         </div>
         {/* Submit button */}
-        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
+        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
+      <h1 style={{ fontSize: '24px' }}>Tidrapporter</h1>
+      <div>
+        {/* Render loading message or time reports table */}
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <table style={{ margin: '0 auto', fontSize: '18px' }}>
+            <thead>
+              <tr>
+                <th>Projekt</th>
+                <th>Person</th>
+                <th>Datum</th>
+                <th>Timmar</th>
+                <th>Kommentar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Map through timeReports and render each report */}
+              {timeReports.map(report => (
+                <tr key={report.id}>
+                  <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
+                  <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
+                  <td>{report.properties.Date.date.start}</td>
+                  <td>{report.properties.Hours.number}</td>
+                  <td>{report.properties.Note.title[0].plain_text}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
-  );
+);
 }
 
 export default Timereport;
