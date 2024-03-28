@@ -196,6 +196,7 @@ function Timereport() {
     setDate('');
     setHours('');
     setComments('');
+    postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())
   };
 
   return (
@@ -242,7 +243,7 @@ function Timereport() {
           </div>
         </div>
         {/* Submit button */}
-        <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
+        <button type="submit">Skicka in tidrapport</button>
       </form>
       <div className="table-container">
   <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Tidrapporter</h1>
