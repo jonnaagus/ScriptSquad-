@@ -108,8 +108,10 @@ function Timereport() {
   const [peopleMap, setPeopleMap] = useState({});
   const [projectsMap, setProjectsMap] = useState({});
 
+  //extracting the id parameter from the route
   const { id } = useParams();
 
+  //fetch time reports associated with the project id when id changes
   useEffect(() => {
     async function getTimeReports() {
       try {
@@ -132,12 +134,14 @@ function Timereport() {
     getTimeReports();
   }, [id]);
 
+  //fetch people and projects data when the component mounts
   useEffect(() => {
     async function fetchPeopleAndProjects() {
       try {
         const peopleResponse = await axios.post('http://localhost:3002/api/people');
         const projectsResponse = await axios.post('http://localhost:3002/api/projects');
     
+        //extracting people data and creating a map
         const peopleMapData = {};
         peopleResponse.data.forEach(person => {
           if (person.properties.Name) {
@@ -145,6 +149,7 @@ function Timereport() {
           }
         });
     
+        //extracting projects data and creating a map
         const projectsMapData = {};
         projectsResponse.data.forEach(project => {
           if (project.properties.Projectname) {
@@ -152,6 +157,7 @@ function Timereport() {
           }
         });
     
+        //setting state variables for people and projects maps
         setPeopleMap(peopleMapData);
         setProjectsMap(projectsMapData);
       } catch (error) {
@@ -159,6 +165,7 @@ function Timereport() {
       }
     }
 
+    //call the fetchPeopleAndProjects function when the component mounts
     fetchPeopleAndProjects();
   }, []);
 
@@ -168,22 +175,22 @@ function Timereport() {
     GetPeople(auth);
   });
 
-  // Function to handle changes in the date input field
+  //function to handle changes in the date input field
   const handleDateChange = (event) => {
     setDate(event.target.value);
   };
 
-  // Function to handle changes in the hours input field
+  //function to handle changes in the hours input field
   const handleHoursChange = (event) => {
     setHours(event.target.value);
   };
 
-  // Function to handle changes in the comments input field
+  //function to handle changes in the comments input field
   const handleCommentsChange = (event) => {
     setComments(event.target.value);
   };
 
-  // Function to handle form submission
+  //function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log('Datum:', date);
@@ -234,6 +241,7 @@ function Timereport() {
       </form>
       <h1 style={{ fontSize: '24px' }}>Tidrapporter</h1>
       <div>
+        {/* Render loading message or time reports table */}
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -248,6 +256,7 @@ function Timereport() {
               </tr>
             </thead>
             <tbody>
+              {/* Map through timeReports and render each report */}
               {timeReports.map(report => (
                 <tr key={report.id}>
                   <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
