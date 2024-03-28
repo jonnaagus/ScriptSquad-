@@ -1,0 +1,117 @@
+/* Container for white box */
+.container2 {
+    background-color: white; 
+    padding: 110px; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto; 
+    max-width: 600px; 
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* Container for project overview */
+.projectContainer {
+    background-color: #f0f0f0; 
+    padding: 20px; 
+    border-radius: 10px; 
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    Background-color: #ded6d3;
+    border-radius: 5px;
+}
+
+/* Table header */
+th {
+    text-align: left;
+    padding: 10px;
+    color: black;
+}
+
+/* Table row */
+tr {
+    border-bottom: 1px solid #000000;
+    color: black;
+}
+
+/* Table cell */
+td {
+    padding: 10px;
+}
+
+/* Dropdown label */
+.label {
+    color: black; 
+    font-weight: bold;
+    
+}
+
+/* Dropdown select container */
+.selectContainer {
+    display: inline-block; 
+    margin-left: 20px; 
+}
+
+/* Dropdown select */
+.selectDropdown {
+    padding: 3px;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-bottom: -8px;
+    border: 1px solid rgb(0, 0, 0);
+}
+
+/* Header */
+h2 {
+    color: black; 
+    text-align: center;
+    margin-bottom: 10px; 
+    font-size: 20px; 
+}
+/* App header */
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.header-container a {
+    color: black;
+    margin-top: 10px;
+}
+
+.header-content a {
+    color: black;
+}
+
+.projectOverview {
+    color: black;
+}
+
+.App-header {
+    background-color: #ded6d3;
+    
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+    color: black;
+  
+}
+
+.overview-header {
+    background-color: white;
+    padding: 50px;
+    border-bottom: 5px;
+    
+}
+
+.overview-container {
+    background-color: white;
+    border-radius: 5px;
+    padding: 50px;
+}

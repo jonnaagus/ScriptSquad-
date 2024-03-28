@@ -1,59 +1,89 @@
 .form-group {
-    margin-bottom: 20px;
-  }
-
-  .form-group label {
-    margin-bottom: 4px;
-    display: block;
-  }
-
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    position: relative; /* Ändrade till relativ position för innehållet */
+  margin-bottom: 20px;
+  padding-top: 20px;
+  border-radius: 5px;
 }
 
-.footer {
-    background-color: #f4f4f4;
-    padding: 20px;
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1; /* Justera z-index för att placera footern över innehållet */
+.form-group label {
+  margin-bottom: 4px;
+  display: block;
+  
 }
 
-.header {
-    background-color: #1b2b3d;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 30px;
-    height: 10vh;
-    width: 100%;
-    position: relative;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2; /* Justera z-index för att placera headern över innehållet */
-}
-
-.outfit-font {
-    font-family: "Outfit", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: weight;
-    font-style: normal;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+  align-items: center;
+  background-color: #ded6d3;
 }
 
 .time-report {
-    margin: auto;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  width: 50%;
+  background-color: white;
+  padding-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
+.project-info {
+  margin-top: 20px;
+  text-align: center;
+  
+  
+}
+
+.project-info h2 {
+  font-size: 24px;
+  
+}
+
+.project-info p {
+  font-size: 16px;
+  color: #666;
+  
+}
+
+.table-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 80%;
+  overflow-x: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container th,
+.table-container td {
+  padding: 10px;
+  border-bottom: 1px solid #000000;
+}
+
+.table-container th {
+  color: black;
+  text-align: left;
+}
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 80%;
+}

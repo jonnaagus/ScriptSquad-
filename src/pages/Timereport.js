@@ -4,10 +4,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 
-
-
 function postDatatoNotion(hours, date, projId, personId, Note) {
-
   //json to add to notion in this example timereports
   const payload =
   {
@@ -203,73 +200,81 @@ function Timereport() {
 
   return (
     <div className="wrapper">
+      {/* Project name and description */}
+      <div className="project-info">
+        <h2>{projectsMap[id]}</h2>
+        
+      </div>
       {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
-        <div className="form-group">
+        {/* Grey box around the form elements */}
+        <div className="form-container">
           {/* Date input field */}
-          <label htmlFor="date">Datum:</label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={handleDateChange}
-            required
-          />
-        </div>
-        <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="date">Datum:</label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={handleDateChange}
+              required
+            />
+          </div>
           {/* Hours input field */}
-          <label htmlFor="hours">Timmar:</label>
-          <input
-            type="number"
-            id="hours"
-            value={hours}
-            onChange={handleHoursChange}
-            required
-          />
-        </div>
-        <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="hours">Timmar:</label>
+            <input
+              type="number"
+              id="hours"
+              value={hours}
+              onChange={handleHoursChange}
+              required
+            />
+          </div>
           {/* Comments input field */}
-          <label htmlFor="comments">Kommentar:</label>
-          <textarea
-            id="comments"
-            value={comments}
-            onChange={handleCommentsChange}
-          />
+          <div className="form-group">
+            <label htmlFor="comments">Kommentar:</label>
+            <textarea
+              id="comments"
+              value={comments}
+              onChange={handleCommentsChange}
+            />
+          </div>
         </div>
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-      <h1 style={{ fontSize: '24px' }}>Tidrapporter</h1>
-      <div>
-        {/* Render loading message or time reports table */}
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <table style={{ margin: '0 auto', fontSize: '18px' }}>
-            <thead>
-              <tr>
-                <th>Projekt</th>
-                <th>Person</th>
-                <th>Datum</th>
-                <th>Timmar</th>
-                <th>Kommentar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Map through timeReports and render each report */}
-              {timeReports.map(report => (
-                <tr key={report.id}>
-                  <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
-                  <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
-                  <td>{report.properties.Date.date.start}</td>
-                  <td>{report.properties.Hours.number}</td>
-                  <td>{report.properties.Note.title[0].plain_text}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+      <div className="table-container">
+  <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Tidrapporter</h1>
+  {/* Render loading message or time reports table */}
+  {loading ? (
+    <p>Loading...</p>
+  ) : (
+    <table>
+      <thead>
+        <tr>
+          <th>Projekt</th>
+          <th>Person</th>
+          <th>Datum</th>
+          <th>Timmar</th>
+          <th>Kommentar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {/* Map through timeReports and render each report */}
+        {timeReports.map(report => (
+          <tr key={report.id}>
+            <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
+            <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
+            <td>{report.properties.Date.date.start}</td>
+            <td>{report.properties.Hours.number}</td>
+            <td>{report.properties.Note.title[0].plain_text}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )}
+</div>
     </div>
 );
 }
