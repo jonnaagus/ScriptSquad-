@@ -4,10 +4,7 @@ import { useLocation } from 'react-router-dom'
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 
-
-
 function postDatatoNotion(hours, date, projId, personId, Note) {
-
   //json to add to notion in this example timereports
   const payload =
   {
@@ -102,11 +99,6 @@ function GetPeople(auth) {
 
 }
 
-
-
-
-
-
 function Timereport(props) {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
@@ -151,38 +143,46 @@ function Timereport(props) {
 
   return (
     <div className="wrapper">
+      {/* Project name and description */}
+      <div className="project-info">
+        <h2>Project Name</h2>
+        <p>Project Description</p>
+      </div>
       {/* Form for submitting time report */}
       <form className="time-report" onSubmit={handleSubmit}>
-        <div className="form-group">
+        {/* Grey box around the form elements */}
+        <div className="form-container">
           {/* Date input field */}
-          <label htmlFor="date">Datum:</label>
-          <input
-            type="date"
-            id="date"
-            value={date}
-            onChange={handleDateChange}
-            required
-          />
-        </div>
-        <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="date">Datum:</label>
+            <input
+              type="date"
+              id="date"
+              value={date}
+              onChange={handleDateChange}
+              required
+            />
+          </div>
           {/* Hours input field */}
-          <label htmlFor="hours">Timmar:</label>
-          <input
-            type="number"
-            id="hours"
-            value={hours}
-            onChange={handleHoursChange}
-            required
-          />
-        </div>
-        <div className="form-group">
+          <div className="form-group">
+            <label htmlFor="hours">Timmar:</label>
+            <input
+              type="number"
+              id="hours"
+              value={hours}
+              onChange={handleHoursChange}
+              required
+            />
+          </div>
           {/* Comments input field */}
-          <label htmlFor="comments">Kommentar:</label>
-          <textarea
-            id="comments"
-            value={comments}
-            onChange={handleCommentsChange}
-          />
+          <div className="form-group">
+            <label htmlFor="comments">Kommentar:</label>
+            <textarea
+              id="comments"
+              value={comments}
+              onChange={handleCommentsChange}
+            />
+          </div>
         </div>
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), state.toString(), window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
