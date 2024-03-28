@@ -232,28 +232,37 @@ function Timereport() {
         {/* Submit button */}
         <button type="submit" onClick={() => postDatatoNotion(parseInt(hours), date.toString(), id, window.localStorage.getItem("people"), comments.toString())}>Skicka in tidrapport</button>
       </form>
-      <div className="timereport-container">
-  <h1>Tidrapporter</h1>
-  <div className="time-reports-scrollable">
-    {loading ? (
-      <p>Loading...</p>
-    ) : (
-      <div className="time-reports">
-        {timeReports.map(report => (
-          <div key={report.id} className="time-report-item">
-            <p>Projekt: {projectsMap[report.properties.Project.relation[0].id]}</p>
-            <p>Person: {peopleMap[report.properties.Person.relation[0].id]}</p>
-            <p>Datum: {report.properties.Date.date.start}</p>
-            <p>Timmar: {report.properties.Hours.number}</p>
-            <p>Kommentar: {report.properties.Note.title[0].plain_text}</p>
-          </div>
-        ))}
+      <h1 style={{ fontSize: '24px' }}>Tidrapporter</h1>
+      <div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <table style={{ margin: '0 auto', fontSize: '18px' }}>
+            <thead>
+              <tr>
+                <th>Projekt</th>
+                <th>Person</th>
+                <th>Datum</th>
+                <th>Timmar</th>
+                <th>Kommentar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {timeReports.map(report => (
+                <tr key={report.id}>
+                  <td>{projectsMap[report.properties.Project.relation[0].id]}</td>
+                  <td>{peopleMap[report.properties.Person.relation[0].id]}</td>
+                  <td>{report.properties.Date.date.start}</td>
+                  <td>{report.properties.Hours.number}</td>
+                  <td>{report.properties.Note.title[0].plain_text}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
-    )}
-  </div>
-</div>
-</div>
-    );
+    </div>
+);
 }
 
 export default Timereport;
