@@ -155,9 +155,7 @@ function CalendarView(props) {
                     </tbody>
                 </table>
             </div>
-            <footer className="footer">
-                2024 Projekt.se. Alla rättigheter förbehållna.
-            </footer>
+           
         </div>
     );
 }
