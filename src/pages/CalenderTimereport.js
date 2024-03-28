@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Timereport.css';
 import axios from 'axios';
 
+// Function to fetch reported time for a given day
 function fetchReportedTimeForDay(date, callback) {
     const payload = {
         filter: {
@@ -16,6 +17,7 @@ function fetchReportedTimeForDay(date, callback) {
        .catch(error => console.error(error));
 }
 
+// Function to fetch reported time for a given week
 function fetchReportedTimeForWeek(startDate, endDate, callback) {
     const payload = {
         filter: {
@@ -37,18 +39,21 @@ function fetchReportedTimeForWeek(startDate, endDate, callback) {
 }
 
 function CalendarView(props) {
+    // State for date, view type, reported time, people and projects
     const [date, setDate] = useState('');
     const [viewType, setViewType] = useState('day');
     const [reportedTime, setReportedTime] = useState([]);
     const [peopleMap, setPeopleMap] = useState({});
     const [projectsMap, setProjectsMap] = useState({});
 
+    // Fetch people and projects from the API when the component mounts for the first time
     useEffect(() => {
         async function fetchData() {
             try {
                 const peopleResponse = await axios.post('http://localhost:3002/api/people');
                 const projectsResponse = await axios.post('http://localhost:3002/api/projects');
 
+                // Create a map of people with their IDs as keys and name as values 
                 const peopleMapData = {};
                 peopleResponse.data.forEach(person => {
                     if (person.properties.Name) {
@@ -56,6 +61,7 @@ function CalendarView(props) {
                     }
                 });
 
+                // Create a map of projects with their IDs as keys and names as values
                 const projectsMapData = {};
                 projectsResponse.data.forEach(project => {
                     if (project.properties.Projectname) {
@@ -63,6 +69,7 @@ function CalendarView(props) {
                     }
                 });
 
+                // Update the state for people and projects 
                 setPeopleMap(peopleMapData);
                 setProjectsMap(projectsMapData);
             } catch (error) {
@@ -71,12 +78,14 @@ function CalendarView(props) {
         }
 
         fetchData();
-    }, []); 
+    }, []); // Use an empty array as the dependency to run the effect only once on mount
 
+    // Fetch reported time when the date or view type changes
     useEffect(() => {
         if (viewType === 'day') {
             fetchReportedTimeForDay(date, setReportedTime);
         } else if (viewType === 'week') {
+            // Calculate the start and end dates for the selected week
             const selectedDate = new Date(date);
             const firstDayOfWeek = new Date(selectedDate);
             firstDayOfWeek.setDate(selectedDate.getDate());
@@ -87,12 +96,14 @@ function CalendarView(props) {
 
             fetchReportedTimeForWeek(startDate, endDate, setReportedTime);
         }
-    }, [date, viewType]);
+    }, [date, viewType]); // Update when the date or view type changes
 
+    // Function to handle changes in the date field
     const handleDateChange = (event) => {
         setDate(event.target.value);
     };
 
+    // Function to handle changes in the view type dropdown
     const handleViewTypeChange = (event) => {
         setViewType(event.target.value);
     };
@@ -100,7 +111,7 @@ function CalendarView(props) {
     return (
         <div className="wrapper">
             <header className="header">
-                <h1>Rapporterad tid</h1>
+                <h1>Tidrapporter</h1>
             </header>
             <div className="calendar-controls">
                 <label htmlFor="date">Datum:</label>
@@ -124,11 +135,11 @@ function CalendarView(props) {
                 <table>
                     <thead>
                         <tr>
-                            <th>Date</th>
+                            <th>Datum</th>
                             <th>Person</th>
-                            <th>Hours</th>
-                            <th>Project</th>
-                            <th>Note</th>
+                            <th>Timmar</th>
+                            <th>Projekt</th>
+                            <th>Kommentarer</th>
                         </tr>
                     </thead>
                     <tbody>
