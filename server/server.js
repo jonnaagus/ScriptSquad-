@@ -24,6 +24,7 @@ app.listen(port, () => {
 });
 
 
+//first login
 app.get("/login/:code", async (req, res) => {
     const { code } = req.params;
     // Generate an access token with the code we got earlier and the client_id and client_secret we retrived earlier
@@ -71,7 +72,7 @@ app.get("/login/:code", async (req, res) => {
 
 });
 
-
+//validate login saved in localstorage
 app.get("/validate/:accessToken", async (req, res) => {
     const { accessToken } = req.params;
 
@@ -131,12 +132,14 @@ app.get("/validate/:accessToken", async (req, res) => {
 
 });
 
+
+//unused but saved for testing
 app.post('/api/query/:databaseId', async (req, res) => {
 
     const { databaseId } = req.params;
 
     try {
-        // Anropa Notion API med inkommande förfrågningsdata
+        // Call Notion API with incoming data
         const response = await axios.post(`https://api.notion.com/v1/databases/${databaseId}/query`, req.body, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
@@ -151,6 +154,7 @@ app.post('/api/query/:databaseId', async (req, res) => {
 });
 
 
+//adds row to table
 app.post('/api/addRow', async (req, res) => {
     try {
         const response = await axios.post(`https://api.notion.com/v1/pages`, req.body, {
@@ -172,7 +176,7 @@ app.post('/api/projects', async (req, res) => {
 
 
     try {
-        // Anropa Notion API med inkommande förfrågningsdata
+        // Call Notion API with incoming data
         const response = await axios.post(`https://api.notion.com/v1/databases/085c0b7eab1d4242b4d0d7f0280154d5/query`, req.body, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
@@ -189,7 +193,7 @@ app.post('/api/projects', async (req, res) => {
 
 app.post('/api/people', async (req, res) => {
     try {
-        // Anropa Notion API med inkommande förfrågningsdata
+        // Call Notion API with incoming data
         const response = await axios.post(`https://api.notion.com/v1/databases/caaa73848db940698e5a9404701078ff/query`, req.body, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
@@ -205,7 +209,7 @@ app.post('/api/people', async (req, res) => {
 
 app.post("/api/timeReports", async (req, res) => {
     try {
-        // Anropa Notion API med inkommande förfrågningsdata
+        // Call Notion API with incoming data
         const response = await axios.post(`https://api.notion.com/v1/databases/c2dcd975b12248588431b2de1d1022c9/query`, req.body, {
             headers: {
                 'Authorization': `Bearer ${NOTION_INTERNAL_API_KEY}`,
