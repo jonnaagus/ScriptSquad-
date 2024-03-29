@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 import './App.css';
-import Login from './pages/login.js'; // Importera inloggningssidan
-import OverviewTable from './pages/overview'; // Importera översiktstabellen
+import Login from './pages/login.js';
+import OverviewTable from './pages/overview';
 import Layout from './components/Layout.js';
 import RequireAuth from './components/RequireAuth.js';
 import CalendarView from './pages/CalenderTimereport.js';
@@ -23,7 +23,6 @@ function App() {
         <Route path="/project/:id" element={<Project />} />
         <Route path="/calenderTimereport" element={<CalendarView />} />
         </Route>
-        {/* <Route path= "*" element={<missing />} */}
       </Route>
 
     </Routes>
