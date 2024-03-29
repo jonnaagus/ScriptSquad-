@@ -1,5 +1,10 @@
 # SqriptSquad
 
+## Start
+öppna två terminaler
+i den första skriv "npm start"
+i den andra skriv "cd server" sen node "server.js"
+
 ## Databas
 vi använder Notion som databas och hämtar data via Notions API
 
