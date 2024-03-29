@@ -1,5 +1,5 @@
 import lockImage from "../images/lock.png"
-import { useEffect , useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/login.css"; // Importera inloggningslayout
 import axios from "axios";
 import useAuth from "../hooks/useAuth";
@@ -30,7 +30,7 @@ export default function Login() {
 
     //used to display loading if testing localstorage user
     const [validating, setValidating] = useState(false);
-    
+
     // The OAuth client ID from the integration page!
     const oauth_client_id = "d0b58e75-fbe9-4e66-9e2b-c613671e6a6e";
 
@@ -109,9 +109,6 @@ export default function Login() {
         }
     }
 
-
-
-
     // When you open the app, this doesn't do anything, but after you sign into Notion, you'll be redirected back with a code at which point we call our backend.
     useEffect(() => {
         GetUser();
@@ -122,32 +119,22 @@ export default function Login() {
         <div>
             {validating && <p>LADDAR....</p>}
 
-            {!validating && 
-            <div>
-                <div className="image-container">
-                    <img src={lockImage} alt="lock" style={{ width: '100px', height: 'auto' }} />
-                </div>
-                    {/* <!--- Bestämmer plats på rutan--> */}
+            {!validating &&
+                <div>
+                    <div className="image-container">
+                        <img src={lockImage} alt="lock" style={{ width: '100px', height: 'auto' }} />
+                    </div>
+                    {/* <!--- placement of box--> */}
                     <div className="login-container">
-                        {/* <!--- Forma rutan--> */}
+                        {/* <!--- shape of box--> */}
                         <div className="login-box">
                             <h2>Logga in med <span className="notion-logo">Notion</span></h2>
-
-                            {loadUser() != null ?
-                                <div>
-                                    <div>
-                                        <p> Du är inloggad som {loadUser().userName}</p>
-                                        <a onClick={() => localStorage.clear()} href="http://localhost:3000/">Logga ut</a>
-                                    </div>
-                                </div>
-                                :
-                                <a
-                                    id="notion-login-button"
-                                    href={`https://api.notion.com/v1/oauth/authorize?client_id=${oauth_client_id}&response_type=code&owner=user`}
-                                >
-                                    Ta mig till Notion
-                                </a>
-                            }
+                            <a
+                                id="notion-login-button"
+                                href={`https://api.notion.com/v1/oauth/authorize?client_id=${oauth_client_id}&response_type=code&owner=user`}
+                            >
+                                Ta mig till Notion
+                            </a>
                         </div>
                     </div>
                 </div>

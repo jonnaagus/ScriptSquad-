@@ -106,7 +106,7 @@ const OverviewTable = () => {
                                             <td>{project.properties['Worked hours']?.rollup?.number || 'Inga arbetade timmar'}</td>
                                             <td>{project.properties["Hours left"]?.formula?.number || 'Inga kvarvarande timmar'}</td>
                                             <td>{project.properties.Timespan?.date?.start || 'Ingen tidsram'}</td>
-                                            <td><Link to={`/timereport/${project.id}`}>Öppna projekt</Link> </td>
+                                            <td><Link to={`/project/${project.id}`}>Öppna projekt</Link> </td>
                                         </tr>
                                     ))}
                             </tbody>

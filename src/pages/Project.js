@@ -96,7 +96,7 @@ function GetPeople(auth) {
 
 }
 
-function Timereport() {
+function Project() {
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
   const [comments, setComments] = useState('');
@@ -280,4 +280,4 @@ function Timereport() {
 );
 }
 
-export default Timereport;
+export default Project;
