@@ -1,6 +1,7 @@
 # SqriptSquad
 
 ## Start
+Lägg .env i server mapp
 öppna två terminaler  
 i den första skriv "npm start"  
 i den andra skriv "cd server" sen "node server.js"
